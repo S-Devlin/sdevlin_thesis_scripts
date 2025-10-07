@@ -24,7 +24,7 @@ def split_dictionary(record_dict):
     not_sorted_dict = {}
     
     for key, value in record_dict.items():
-        seq_length = len(value)  # Get the length of the current sequence
+        seq_length = len(value)  
         if seq_length <= 500:
             dict_0_to_500[key] = value
         elif 500 < seq_length <= 1000:
@@ -68,17 +68,9 @@ def split_dictionary(record_dict):
         else:
             not_sorted_dict[key] = value
 
-    # Return dictionaries for further use or inspection
     return dict_0_to_500, dict_501_to_1000, dict_1001_to_1500, dict_1501_to_2000, dict_2001_to_2500, dict_2501_to_3000, dict_3001_to_3500, dict_3501_to_4000, dict_4001_to_4500, dict_4501_to_5000, dict_5001_to_5500, dict_5501_to_6000, dict_6001_to_6500, dict_6501_to_7000, dict_7001_to_7500, dict_7501_to_8000, dict_8001_to_8500, dict_8501_to_9000, dict_9001_to_9500, dict_9501_to_10000, not_sorted_dict
 def write_fasta_files_from_dictionaries(dictionaries, base_file_path):
-    """
-    Write each dictionary of sequences to a separate FASTA file.
     
-    Parameters:
-    - dictionaries (dict of dict): A dictionary where keys are descriptive names of each sequence dictionary,
-      and values are the dictionaries containing sequences.
-    - base_file_path (str): The base path for output files, which will be appended with descriptive names.
-    """
     for dict_name, sequences in dictionaries.items():
         # Construct file path for each dictionary
         file_path = f"{base_file_path}_{dict_name}_gt7.fasta"
@@ -87,16 +79,13 @@ def write_fasta_files_from_dictionaries(dictionaries, base_file_path):
                 file.write(f'>{accession}\n{sequence}\n')
         print(f"Written {len(sequences)} sequences to {file_path}")
 
-# Load FASTA file into a dictionary
 record_dict = {}
-with open(r"C:\Users\sdevl\Desktop\hvr1_extraction_new_20022024\gt7\gt7_sequences_25_percent_e2_coverage.fasta") as fasta_file:
+with open(r"path\to\input\fasta") as fasta_file:
     for title, seq in SimpleFastaParser(fasta_file):
         record_dict[title] = seq
 
-# Split the dictionary by sequence length
 dict_0_to_500, dict_501_to_1000, dict_1001_to_1500, dict_1501_to_2000, dict_2001_to_2500, dict_2501_to_3000, dict_3001_to_3500, dict_3501_to_4000, dict_4001_to_4500, dict_4501_to_5000, dict_5001_to_5500, dict_5501_to_6000, dict_6001_to_6500, dict_6501_to_7000, dict_7001_to_7500, dict_7501_to_8000, dict_8001_to_8500, dict_8501_to_9000, dict_9001_to_9500, dict_9501_to_10000, not_sorted_dict = split_dictionary(record_dict)
 
-# Group dictionaries together for iteration
 dictionaries = {
     "0_to_500": dict_0_to_500,
     "501_to_1000": dict_501_to_1000,
@@ -121,8 +110,7 @@ dictionaries = {
     "not_sorted": not_sorted_dict
 }
 
-# Specify the base path for output files
-base_file_path = r"C:\Users\sdevl\Desktop\hvr1_extraction_new_20022024\gt7\splitting_sequences_by_length_output"
+base_file_path = r"path\to\output\directory"
 
 # Write the FASTA files
 write_fasta_files_from_dictionaries(dictionaries, base_file_path)
